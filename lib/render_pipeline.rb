@@ -1,0 +1,12 @@
+require 'html/pipeline'
+require 'nokogiri'
+require 'linguist'
+require 'sanitize'
+require 'rinku'
+require 'gemoji'
+require 'github/markdown'
+require 'truncato'
+require 'rumoji'
+require 'pygments.rb'
+require 'cld'
+
