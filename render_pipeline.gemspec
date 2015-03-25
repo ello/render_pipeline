@@ -26,5 +26,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'truncato'
   s.add_dependency 'rumoji'
   s.add_dependency 'pygments.rb'
-  s.add_dependency 'cld'
 end

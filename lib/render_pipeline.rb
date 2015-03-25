@@ -8,5 +8,3 @@ require 'github/markdown'
 require 'truncato'
 require 'rumoji'
 require 'pygments.rb'
-require 'cld'
-
