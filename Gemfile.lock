@@ -1,7 +1,17 @@
+GIT
+  remote: git://github.com/jch/html-pipeline.git
+  revision: b722289f6ec6ece4fa854e5355d09ec6159c4687
+  ref: b722289f
+  specs:
+    html-pipeline (1.11.0)
+      activesupport (>= 2, < 5)
+      nokogiri (>= 1.4, <= 1.6.5)
+
 PATH
   remote: .
   specs:
     render_pipeline (0.0.1)
+      activesupport
       gemoji
       github-linguist
       github-markdown
@@ -33,9 +43,6 @@ GEM
       mime-types (>= 1.19)
       rugged (~> 0.23.0b1)
     github-markdown (0.6.8)
-    html-pipeline (1.11.0)
-      activesupport (>= 2)
-      nokogiri (~> 1.4)
     htmlentities (4.3.3)
     i18n (0.7.0)
     json (1.8.2)
@@ -82,5 +89,6 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
+  html-pipeline!
   render_pipeline!
   rspec

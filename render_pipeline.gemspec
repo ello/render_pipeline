@@ -16,9 +16,10 @@ Gem::Specification.new do |s|
   s.files       = Dir['{lib}/**/*'] + ['README.md']
   s.test_files  = `git ls-files -- {spec}/*`.split("\n")
 
+  s.add_dependency 'activesupport'
   s.add_dependency 'nokogiri', '1.6.5' # Lock since 1.6.6 is buggy
-  s.add_dependency 'html-pipeline' # must use modeset/html-pipeline
-  s.add_dependency 'github-linguist'
+  s.add_dependency 'html-pipeline' # must use jch/html-pipeline for now
+  s.add_dependency 'github-linguist', '4.2.7' # issues with processing in 4.5.3
   s.add_dependency 'sanitize'
   s.add_dependency 'rinku'
   s.add_dependency 'gemoji'
