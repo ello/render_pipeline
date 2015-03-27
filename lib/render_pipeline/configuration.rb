@@ -7,6 +7,7 @@ module RenderPipeline
     class << self
       attr_accessor :sanitize_rules
       attr_accessor :render_filters, :render_contexts
+      attr_accessor :cache
     end
 
     self.sanitize_rules = {
@@ -24,6 +25,8 @@ module RenderPipeline
       RenderPipeline::Filter::Emoji,
       RenderPipeline::Filter::LinkAdjustments,
     ]
+
+    self.cache = nil
 
     def self.add_emoji(emoji)
       Emoji.create(emoji)

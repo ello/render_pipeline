@@ -1,4 +1,5 @@
 require 'active_support/core_ext/string/output_safety'
+require 'linguist/md5'
 
 module RenderPipeline
   class Renderer
@@ -7,12 +8,14 @@ module RenderPipeline
     end
 
     def render(options = {})
-      result = pipeline(options[:context] || :default).call(clean_content)[:output].to_s
-      if options[:truncate]
-        tail = options[:truncate_tail] || '...'
-        Truncato.truncate(result, max_length: options[:truncate], tail: tail).html_safe
-      else
-        result.html_safe
+      cache(options) do
+        result = pipeline(options[:context] || :default).call(clean_content)[:output].to_s
+        if options[:truncate]
+          tail = options[:truncate_tail] || '...'
+          Truncato.truncate(result, max_length: options[:truncate], tail: tail).html_safe
+        else
+          result.html_safe
+        end
       end
     end
 
@@ -27,6 +30,15 @@ module RenderPipeline
 
     def clean_content
       @content.gsub(/\<br\>/, "\r\n").gsub(/\u00a0/, ' ').gsub(/&nbsp;/, ' ')
+    end
+
+    def cache(options, &block)
+      if cache = RenderPipeline.configuration.cache
+        key = Linguist::MD5.hexdigest(options.merge(content: @content.to_s))
+        cache.fetch(key, &block)
+      else
+        yield
+      end
     end
   end
 end
