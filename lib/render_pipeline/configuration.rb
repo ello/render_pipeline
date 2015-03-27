@@ -35,6 +35,8 @@ module RenderPipeline
 
     class Context
       SETTINGS = [
+        # link adjustments
+        :host_name,
         # mentions
         :username_pattern,
         :username_link_cleaner_pattern,
@@ -46,7 +48,8 @@ module RenderPipeline
       attr_accessor(*SETTINGS)
 
       def initialize
-        @asset_root = ""
+        @host_name = ''
+        @asset_root = ''
         @gfm = true
         @username_pattern = /[\w\-]+/
         @username_link_cleaner_pattern = /(>@[\w\-]*?)(_{1,3}[\w\-]+_{1,3}[\w\-]*?<\/a>)/
