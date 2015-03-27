@@ -24,6 +24,7 @@ module RenderPipeline
       RenderPipeline::Filter::SyntaxHighlighter,
       RenderPipeline::Filter::Emoji,
       RenderPipeline::Filter::LinkAdjustments,
+      RenderPipeline::Filter::ImageAdjustments,
     ]
 
     self.cache = nil

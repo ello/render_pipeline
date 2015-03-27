@@ -7,11 +7,13 @@ require 'github/markdown'
 require 'truncato'
 require 'rumoji'
 require 'pygments'
+require 'fastimage'
 require 'sanitize'
 
 module RenderPipeline
   module Filter
     autoload :Emoji, 'render_pipeline/filters/emoji'
+    autoload :ImageAdjustments, 'render_pipeline/filters/image_adjustments'
     autoload :LinkAdjustments, 'render_pipeline/filters/link_adjustments'
     autoload :Markdown, 'render_pipeline/filters/markdown'
     autoload :Mentions, 'render_pipeline/filters/mentions'

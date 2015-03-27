@@ -12,6 +12,7 @@ PATH
   specs:
     render_pipeline (0.0.1)
       activesupport
+      fastimage
       gemoji
       github-linguist
       github-markdown
@@ -32,10 +33,13 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.3.7)
     charlock_holmes (0.7.3)
     crass (1.0.1)
     diff-lcs (1.2.5)
     escape_utils (1.0.1)
+    fastimage (1.6.8)
+      addressable (~> 2.3, >= 2.3.5)
     gemoji (2.1.0)
     github-linguist (4.5.3)
       charlock_holmes (~> 0.7.3)
