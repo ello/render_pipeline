@@ -35,6 +35,7 @@ module RenderPipeline
 
     class Context
       SETTINGS = [
+        :render_filters,
         # link adjustments
         :host_name,
         # mentions
@@ -48,13 +49,14 @@ module RenderPipeline
       attr_accessor(*SETTINGS)
 
       def initialize
+        @render_filters = RenderPipeline.configuration.render_filters
         @host_name = ''
         @asset_root = ''
         @gfm = true
         @username_pattern = /[\w\-]+/
         @username_link_cleaner_pattern = /(>@[\w\-]*?)(_{1,3}[\w\-]+_{1,3}[\w\-]*?<\/a>)/
 
-        default = RenderPipeline.configuration.render_contexts["default"]
+        default = RenderPipeline.configuration.render_contexts['default']
         instance_eval(&default[:block]) if default
         yield self if block_given?
       end
@@ -70,6 +72,7 @@ module RenderPipeline
     end
 
     def self.render_context_for(name)
+      puts name
       render_contexts[name.to_s][:instance].to_hash
     end
   end

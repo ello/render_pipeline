@@ -9,8 +9,12 @@ RenderPipeline.configure do |config|
 
   config.add_emoji 'ello'
 
-  config.render_context do |c|
+  config.render_context :default do |c|
     c.asset_root = "http://example.com/images"
+  end
+
+  config.render_context :lite do |c|
+    c.render_filters = RenderPipeline.configuration.render_filters - [RenderPipeline::Filter::ImageAdjustments]
   end
 
 end

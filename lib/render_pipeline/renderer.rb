@@ -8,8 +8,9 @@ module RenderPipeline
     end
 
     def render(options = {})
+      context = RenderPipeline.configuration.render_context_for(options[:context] || :default)
       cache(options) do
-        result = pipeline(options[:context] || :default).call(clean_content)[:output].to_s
+        result = pipeline(context).call(clean_content)[:output].to_s
         if options[:truncate]
           tail = options[:truncate_tail] || '...'
           Truncato.truncate(result, max_length: options[:truncate], tail: tail).html_safe
@@ -22,10 +23,7 @@ module RenderPipeline
     private
 
     def pipeline(context)
-      @pipeline ||= HTML::Pipeline.new(
-        RenderPipeline.configuration.render_filters,
-        RenderPipeline.configuration.render_context_for(context)
-      )
+      @pipeline ||= HTML::Pipeline.new(context[:render_filters], context)
     end
 
     def clean_content

@@ -5,14 +5,26 @@ describe RenderPipeline::Renderer do
   let(:content) do
     <<-CONTENT.strip_heredoc
     hey everybody<br/>this is\u00a0 some<br>test&nbsp;content.
+    <img src="http://lorempixel.com/output/fashion-q-g-96-33-8.jpg">
     CONTENT
   end
+
 
   it 'can render content' do
     result = subject.new(content).render
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
     <p>hey everybody<br>this is  some<br>
-    test content.</p>
+    test content.<br>
+    <img src="http://lorempixel.com/output/fashion-q-g-96-33-8.jpg" width="96" height="33"></p>
+    HTML
+  end
+
+  it 'can render content with different contexts' do
+    result = subject.new(content).render(context: :lite)
+    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+    <p>hey everybody<br>this is  some<br>
+    test content.<br>
+    <img src="http://lorempixel.com/output/fashion-q-g-96-33-8.jpg"></p>
     HTML
   end
 
@@ -25,9 +37,9 @@ describe RenderPipeline::Renderer do
 
   it 'passes the correct things to the html pipeline' do
     call_stub = double(call: { output: '_output_' })
-    expect(RenderPipeline.configuration).to receive(:render_filters).and_return('_render_filters_')
-    expect(RenderPipeline.configuration).to receive(:render_context_for).with(:default).and_return('_render_context_')
-    expect(HTML::Pipeline).to receive(:new).with('_render_filters_', '_render_context_').and_return(call_stub)
+    hash = { render_filters: '_render_filters_', opt1: '_render_context_' }
+    expect(RenderPipeline.configuration).to receive(:render_context_for).with(:default).and_return(hash)
+    expect(HTML::Pipeline).to receive(:new).with('_render_filters_', hash).and_return(call_stub)
     expect(subject.new(content).render).to eq('_output_')
   end
 
