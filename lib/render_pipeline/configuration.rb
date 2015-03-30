@@ -72,7 +72,6 @@ module RenderPipeline
     end
 
     def self.render_context_for(name)
-      puts name
       render_contexts[name.to_s][:instance].to_hash
     end
   end
