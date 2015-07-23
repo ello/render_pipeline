@@ -11,6 +11,7 @@ RenderPipeline.configure do |config|
 
   config.render_context :default do |c|
     c.asset_root = "http://example.com/images"
+    c.hashtag_root = "http://example.com/search"
   end
 
   config.render_context :lite do |c|

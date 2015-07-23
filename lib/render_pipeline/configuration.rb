@@ -22,6 +22,7 @@ module RenderPipeline
       RenderPipeline::Filter::Rumoji,
       RenderPipeline::Filter::Markdown,
       RenderPipeline::Filter::SyntaxHighlighter,
+      RenderPipeline::Filter::Hashtag,
       RenderPipeline::Filter::Emoji,
       RenderPipeline::Filter::LinkAdjustments,
       RenderPipeline::Filter::ImageAdjustments,
@@ -45,6 +46,10 @@ module RenderPipeline
         :asset_root,
         # markdown
         :gfm,
+        # hashtags
+        :hashtag_root,
+        :hashtag_pattern,
+        :hashtag_ignored_ancestor_tags,
       ]
       attr_accessor(*SETTINGS)
 
@@ -55,6 +60,10 @@ module RenderPipeline
         @gfm = true
         @username_pattern = /[\w\-]+/
         @username_link_cleaner_pattern = /(>@[\w\-]*?)(_{1,3}[\w\-]+_{1,3}[\w\-]*?<\/a>)/
+        @hashtag_root = ''
+        # Tweak of http://www.rubular.com/r/PySQB8NvUY
+        @hashtag_pattern = /(?:\s|^)(?:#)(\w+)(?=\s|$)/
+        @hashtag_ignored_ancestor_tags = ''
 
         default = RenderPipeline.configuration.render_contexts['default']
         instance_eval(&default[:block]) if default

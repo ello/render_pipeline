@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe RenderPipeline::Filter::ImageAdjustments do
   subject { described_class }
-  let(:src) { 'http://lorempixel.com/output/fashion-q-g-96-33-8.jpg' }
+  # Direct URIs have disappeared, this may be better long term
+  let(:src) { 'http://lorempixel.com/96/33/sports/1/' }
 
   it 'resolves image dimensions for images without both width and height' do
     result = subject.to_html(%{<img src="#{src}"/>})
