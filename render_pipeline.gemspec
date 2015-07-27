@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = RenderPipeline::VERSION
   s.authors     = ['jayzes', 'jejacks0n']
   s.email       = ['info@ello.co']
-  s.homepage    = 'https://github.com/ello/ncmec_reporting'
+  s.homepage    = 'https://github.com/ello/ello/vendor/gems/render_pipeline'
 
   s.summary     = ''
   s.description = ''

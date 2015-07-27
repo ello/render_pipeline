@@ -5,6 +5,7 @@ module RenderPipeline
   class Renderer
     def initialize(content)
       @content = content.presence || ''
+      @render_version_key = RenderPipeline.configuration.render_version_key
     end
 
     def render(options = {})
@@ -32,11 +33,15 @@ module RenderPipeline
 
     def cache(options, &block)
       if cache = RenderPipeline.configuration.cache
-        key = Linguist::MD5.hexdigest(options.merge(content: @content.to_s))
-        cache.fetch(key, &block)
+        md5hash = Linguist::MD5.hexdigest(options.merge(content: @content.to_s))
+        cache.fetch(cache_key(md5hash), &block)
       else
         yield
       end
+    end
+
+    def cache_key(md5hash)
+      [@render_version_key, md5hash].join()
     end
   end
 end

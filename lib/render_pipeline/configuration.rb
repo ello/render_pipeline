@@ -6,7 +6,7 @@ module RenderPipeline
 
     class << self
       attr_accessor :sanitize_rules
-      attr_accessor :render_filters, :render_contexts
+      attr_accessor :render_filters, :render_contexts, :render_version_key
       attr_accessor :cache
     end
 
