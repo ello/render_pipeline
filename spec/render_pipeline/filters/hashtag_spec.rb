@@ -19,12 +19,12 @@ describe RenderPipeline::Filter::Hashtag do
     test_context = context.clone
     test_context[:hashtag_root] = ''
     test_context[:hashtag_classlist] = ''
-    href = '/?terms=%23coolstuff'
+    href = '/search?terms=%23coolstuff'
 
     result = subject.to_html('Check out #coolstuff', test_context)
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      Check out <a href="#{href}" class="hashtag-link">#coolstuff</a>
+      Check out <a href="#{href}" class="">#coolstuff</a>
     HTML
   end
 

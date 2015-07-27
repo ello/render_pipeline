@@ -50,6 +50,7 @@ module RenderPipeline
         :hashtag_root,
         :hashtag_pattern,
         :hashtag_ignored_ancestor_tags,
+        :hashtag_classlist
       ]
       attr_accessor(*SETTINGS)
 
@@ -61,8 +62,8 @@ module RenderPipeline
         @username_pattern = /[\w\-]+/
         @username_link_cleaner_pattern = /(>@[\w\-]*?)(_{1,3}[\w\-]+_{1,3}[\w\-]*?<\/a>)/
         @hashtag_root = ''
-        # Tweak of http://www.rubular.com/r/PySQB8NvUY
-        @hashtag_pattern = /(?:\s|^)(?:#)(\w+)(?=\s|$)/
+        @hashtag_classlist = 'hashtag-link'
+        @hashtag_pattern = /\B(#\w+)/
         @hashtag_ignored_ancestor_tags = ''
 
         default = RenderPipeline.configuration.render_contexts['default']

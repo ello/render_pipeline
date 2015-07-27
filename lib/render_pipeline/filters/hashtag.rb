@@ -19,11 +19,10 @@ module RenderPipeline
 
       def hashtag_filter(text)
         text.gsub(context[:hashtag_pattern]) do |match|
-          tag = $1
-          hashtag_classlist = context[:hashtag_classlist].presence || 'hashtag-link'
-          root = context[:hashtag_root].presence || '/'
-          # Latest regex eats the #, so we need a space here.
-          " <a href='#{root}?terms=%23#{tag}' class=#{hashtag_classlist}>##{tag}</a>"
+          tag = $1[1..-1]
+          hashtag_classlist = context[:hashtag_classlist].presence
+          root = context[:hashtag_root].presence || '/search'
+          "<a href='#{root}?terms=%23#{tag}' class=#{hashtag_classlist}>##{tag}</a>"
         end
       end
       # Return ancestor tags to stop the hashtagification
