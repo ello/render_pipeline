@@ -22,7 +22,7 @@ module RenderPipeline
           tag = $1[1..-1]
           hashtag_classlist = context[:hashtag_classlist].presence
           root = context[:hashtag_root].presence || '/search'
-          "<a href='#{root}?terms=%23#{tag}' class=#{hashtag_classlist}>##{tag}</a>"
+          "<span data-href='#{root}?terms=%23#{tag}' data-capture='hashtagClick' class=#{hashtag_classlist}>##{tag}</span>"
         end
       end
       # Return ancestor tags to stop the hashtagification
