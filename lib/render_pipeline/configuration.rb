@@ -21,6 +21,7 @@ module RenderPipeline
       RenderPipeline::Filter::Mentions,
       RenderPipeline::Filter::Rumoji,
       RenderPipeline::Filter::Markdown,
+      RenderPipeline::Filter::Code,
       RenderPipeline::Filter::SyntaxHighlighter,
       RenderPipeline::Filter::Hashtag,
       RenderPipeline::Filter::Emoji,

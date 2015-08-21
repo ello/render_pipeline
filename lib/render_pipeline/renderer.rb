@@ -1,5 +1,4 @@
 require 'active_support/core_ext/string/output_safety'
-require 'linguist/md5'
 
 module RenderPipeline
   class Renderer
@@ -28,12 +27,15 @@ module RenderPipeline
     end
 
     def clean_content
-      @content.gsub(/\<br\>/, "\r\n").gsub(/\u00a0/, ' ').gsub(/&nbsp;/, ' ')
+      @content
+        .gsub(/\<br\>/, "\r\n")
+        .gsub(/\u00a0/, ' ')
+        .gsub(/&nbsp;/, ' ')
     end
 
     def cache(options, &block)
       if cache = RenderPipeline.configuration.cache
-        md5hash = Linguist::MD5.hexdigest(options.merge(content: @content.to_s))
+        md5hash = hexdigest(options.merge(content: @content.to_s))
         cache.fetch(cache_key(md5hash), &block)
       else
         yield
@@ -42,6 +44,35 @@ module RenderPipeline
 
     def cache_key(md5hash)
       [@render_version_key, md5hash].join()
+    end
+
+    # https://github.com/github/linguist/blob/master/lib/linguist/md5.rb#L1
+    # Stolen from github-linguist since that is all we appear to be using
+    # at this point.
+    def hexdigest(obj)
+      digest = Digest::MD5.new
+
+      case obj
+      when String, Symbol, Integer
+        digest.update "#{obj.class}"
+        digest.update "#{obj}"
+      when TrueClass, FalseClass, NilClass
+        digest.update "#{obj.class}"
+      when Array
+        digest.update "#{obj.class}"
+        for e in obj
+          digest.update(hexdigest(e))
+        end
+      when Hash
+        digest.update "#{obj.class}"
+        for e in obj.map { |(k, v)| hexdigest([k, v]) }.sort
+          digest.update(e)
+        end
+      else
+        raise TypeError, "can't convert #{obj.inspect} into String"
+      end
+
+      digest.hexdigest
     end
   end
 end

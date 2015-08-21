@@ -9,6 +9,88 @@ describe RenderPipeline::Renderer do
     CONTENT
   end
 
+  let(:broken_links) { '[here is code](http://example.com?one=two&three=4)' }
+  let(:broken_code) do
+    <<-CONTENT.strip_heredoc
+    ```ruby
+    if 2 > 1
+      do_something.each |do|
+        what_else_breaks && who_knows?
+      end
+    end
+    ```
+    CONTENT
+  end
+  let(:encoded_links) { '[here is code](http://example.com?one=two&amp;three=4)' }
+  let(:encoded_code) do
+    <<-CONTENT.strip_heredoc
+    ```ruby
+    if 2 &gt; 1
+      do_something.each |do|
+        what_else_breaks &amp;&amp; who_knows?
+      end
+    end
+    ```
+    CONTENT
+  end
+
+  let(:xss_content) do
+    <<-CONTENT.strip_heredoc
+    ```
+      &lt;script&gt;alert('good example!');&lt;/script&gt;
+    ```
+    &lt;script&gt;alert('what happened');&lt;/script&gt;
+    CONTENT
+  end
+
+  it 'should only single encode ampersands in URLs' do
+    rendered_links = subject.new(broken_links).render
+    expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
+    <p><a href="http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
+    HTML
+  end
+
+  it 'should also ignore already encoded ampersands and not replace them' do
+    rendered_links = subject.new(encoded_links).render
+    expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
+    <p><a href="http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
+    HTML
+  end
+
+  it 'should not destroy code by double escaping &s' do
+    rendered_code = subject.new(broken_code).render
+    expect("#{rendered_code}\n").to eq(<<-HTML.strip_heredoc)
+    <div class="highlight highlight-ruby"><pre><span class="k">if</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="mi">1</span>
+      <span class="n">do_something</span><span class="o">.</span><span class="n">each</span> <span class="o">|</span><span class="k">do</span><span class="o">|</span>
+        <span class="n">what_else_breaks</span> <span class="o">&amp;&amp;</span> <span class="n">who_knows?</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    </pre></div>
+    HTML
+  end
+
+  it 'should also ignore already encoded code' do
+    rendered_code = subject.new(encoded_code).render
+    expect("#{rendered_code}\n").to eq(<<-HTML.strip_heredoc)
+    <div class="highlight highlight-ruby"><pre><span class="k">if</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="mi">1</span>
+      <span class="n">do_something</span><span class="o">.</span><span class="n">each</span> <span class="o">|</span><span class="k">do</span><span class="o">|</span>
+        <span class="n">what_else_breaks</span> <span class="o">&amp;&amp;</span> <span class="n">who_knows?</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    </pre></div>
+    HTML
+  end
+
+  it 'properly encodes script tags' do
+    result = subject.new(xss_content).render
+
+    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+      <pre><code>  &lt;script&gt;alert('good example!');&lt;/script&gt;
+      </code></pre>
+
+      <p>&lt;script&gt;alert('what happened');&lt;/script&gt;</p>
+    HTML
+  end
 
   it 'can render content' do
     result = subject.new(content).render

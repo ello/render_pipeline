@@ -1,6 +1,5 @@
 require 'html/pipeline'
 require 'nokogiri'
-require 'linguist'
 require 'rinku'
 require 'gemoji'
 require 'github/markdown'
@@ -12,6 +11,7 @@ require 'sanitize'
 
 module RenderPipeline
   module Filter
+    autoload :Code, 'render_pipeline/filters/code'
     autoload :Emoji, 'render_pipeline/filters/emoji'
     autoload :ImageAdjustments, 'render_pipeline/filters/image_adjustments'
     autoload :Hashtag, 'render_pipeline/filters/hashtag'
