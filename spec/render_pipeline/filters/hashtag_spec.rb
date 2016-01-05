@@ -11,7 +11,7 @@ describe RenderPipeline::Filter::Hashtag do
     result = subject.to_html('Check out #coolstuff', context)
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      Check out <span data-href="#{href}" data-capture="hashtagClick" class="spec-class">#coolstuff</span>
+      Check out <a href="#{href}" data-href="#{href}" data-capture="hashtagClick" class="spec-class">#coolstuff</a>
     HTML
   end
 
@@ -24,7 +24,7 @@ describe RenderPipeline::Filter::Hashtag do
     result = subject.to_html('Check out #coolstuff', test_context)
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      Check out <span data-href="#{href}" data-capture="hashtagClick" class="">#coolstuff</span>
+      Check out <a href="#{href}" data-href="#{href}" data-capture="hashtagClick" class="">#coolstuff</a>
     HTML
   end
 
