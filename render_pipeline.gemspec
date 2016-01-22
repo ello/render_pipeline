@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.test_files  = `git ls-files -- {spec}/*`.split("\n")
 
   s.add_dependency 'activesupport'
-  s.add_dependency 'nokogiri', '1.6.5' # Lock since 1.6.6 is buggy
-  s.add_dependency 'html-pipeline', '2.0'
+  s.add_dependency 'nokogiri', '>= 1.6.7.2'
+  s.add_dependency 'html-pipeline', '~> 2.0'
   s.add_dependency 'rinku'
   s.add_dependency 'gemoji'
   s.add_dependency 'github-markdown'
