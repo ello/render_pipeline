@@ -4,7 +4,7 @@ module RenderPipeline
       DEFAULT_IGNORED_ANCESTOR_TAGS = %w(a pre code tt).freeze
 
       def call
-        doc.search('text()').each do |node|
+        doc.search('.//text()').each do |node|
           content = node.to_html
           next unless content.match(context[:hashtag_pattern])
           next if has_ancestor?(node, ignored_ancestor_tags)
