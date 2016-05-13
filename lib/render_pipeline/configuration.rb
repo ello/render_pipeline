@@ -51,7 +51,9 @@ module RenderPipeline
         :hashtag_root,
         :hashtag_pattern,
         :hashtag_ignored_ancestor_tags,
-        :hashtag_classlist
+        :hashtag_classlist,
+        # notification email
+        :notification_email
       ]
       attr_accessor(*SETTINGS)
 
