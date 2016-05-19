@@ -13,7 +13,7 @@ module RenderPipeline
         result = pipeline(context).call(clean_content)[:output].to_s
         if options[:truncate]
           tail = options[:truncate_tail] || '...'
-          Truncato.truncate(result, max_length: options[:truncate], tail: tail).html_safe
+          Truncato.truncate(result, max_length: options[:truncate], count_tags: false, tail: tail).html_safe
         else
           result.html_safe
         end
