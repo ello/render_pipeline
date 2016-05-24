@@ -7,7 +7,7 @@ module RenderPipeline
           element['href'] ||= ''
 
           if context[:notification_email]
-            href = "https://#{context[:host_name]}" + element['href']
+            href = determine_href(element)
             element['href'] = CGI.unescapeHTML(href)
           end
 
@@ -27,6 +27,16 @@ module RenderPipeline
           end
         end
         doc
+      end
+
+      private
+
+      def determine_href(element)
+        if element['href'].starts_with?('/')
+          "https://#{context[:host_name]}" + element['href']
+        else
+          element['href']
+        end
       end
     end
   end
