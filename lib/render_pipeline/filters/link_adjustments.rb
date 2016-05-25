@@ -3,7 +3,7 @@ module RenderPipeline
     class LinkAdjustments < HTML::Pipeline::Filter
       def call
         host_regex = %r{\Ahttp(s)?://(www.)?#{context[:host_name]}(/.*)}
-          doc.search('a').each do |element|
+        doc.search('a').each do |element|
           element['href'] ||= ''
 
           if context[:notification_email]
