@@ -6,14 +6,14 @@ module RenderPipeline
         doc.search('a').each do |element|
           element['href'] ||= ''
 
-          if context[:notification_email]
+          if context[:use_absolute_url]
             href = determine_href(element)
             element['href'] = CGI.unescapeHTML(href)
           end
 
           # make relative links.
           # todo: move this regexp into configuration
-          unless context[:notification_email]
+          unless context[:use_absolute_url]
             if element['href'] =~ host_regex
               element['href'] = CGI.unescapeHTML($3)
             end

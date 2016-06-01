@@ -40,6 +40,7 @@ module RenderPipeline
         :render_filters,
         # link adjustments
         :host_name,
+        :use_absolute_url,
         # mentions
         :username_pattern,
         :username_link_cleaner_pattern,
@@ -51,9 +52,7 @@ module RenderPipeline
         :hashtag_root,
         :hashtag_pattern,
         :hashtag_ignored_ancestor_tags,
-        :hashtag_classlist,
-        # notification email
-        :notification_email
+        :hashtag_classlist
       ]
       attr_accessor(*SETTINGS)
 
