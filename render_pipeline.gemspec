@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = 'render_pipeline'
   s.version     = RenderPipeline::VERSION
   s.authors     = ['jayzes', 'jejacks0n']
-  s.email       = ['info@ello.co']
-  s.homepage    = 'https://github.com/ello/ello/vendor/gems/render_pipeline'
+  s.email       = ['engineering@ello.co']
+  s.homepage    = 'https://github.com/ello/render_pipeline'
 
   s.summary     = ''
   s.description = ''
