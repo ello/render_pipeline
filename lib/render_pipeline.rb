@@ -1,3 +1,4 @@
+require 'render_pipeline/version'
 require 'html/pipeline'
 require 'nokogiri'
 require 'rinku'
