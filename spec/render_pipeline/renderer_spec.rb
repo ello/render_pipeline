@@ -111,9 +111,9 @@ describe RenderPipeline::Renderer do
   end
 
   it 'can truncate the response' do
-    result = subject.new(content).render(truncate: 20, truncate_tail: '<<<')
+    result = subject.new(content).render(truncate: 13, truncate_tail: '<<<')
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-    <p>hey everybody<br/><<<</p>
+    <p>hey everybody&lt;&lt;&lt;</p>
     HTML
   end
 
