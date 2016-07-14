@@ -2,13 +2,15 @@ require 'spec_helper'
 
 describe RenderPipeline::Filter::Hashtag do
   subject { described_class }
+
   let(:context) { RenderPipeline.configuration.render_context_for(:default) }
 
   it 'turns hashtags into links' do
-    context[:hashtag_classlist] = "spec-class"
+    test_context = context.dup
+    test_context[:hashtag_classlist] = "spec-class"
     href = 'http://example.com/search?terms=%23coolstuff'
 
-    result = subject.to_html('Check out #coolstuff', context)
+    result = subject.to_html('Check out #coolstuff', test_context)
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
       Check out <a href="#{href}" data-href="#{href}" data-capture="hashtagClick" class="spec-class">#coolstuff</a>
@@ -16,7 +18,7 @@ describe RenderPipeline::Filter::Hashtag do
   end
 
   it 'uses defaults for classlist and root' do
-    test_context = context.clone
+    test_context = context.dup
     test_context[:hashtag_root] = ''
     test_context[:hashtag_classlist] = ''
     href = '/search?terms=%23coolstuff'
@@ -33,12 +35,10 @@ describe RenderPipeline::Filter::Hashtag do
 
     result = subject.to_html(test_link, context)
     expect(result).to eq test_link
-  end 
+  end
 
   it 'does not turn a mid-word-hashtag into a link' do
     result = subject.to_html('Cool#stuff', context)
     expect(result).to eq('Cool#stuff')
   end
-
-
 end
