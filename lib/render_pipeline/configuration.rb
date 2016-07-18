@@ -80,7 +80,7 @@ module RenderPipeline
 
     self.render_contexts = { 'default' => { block: proc {} } }
     def self.render_context(*names, &block)
-      names.push(:default) if names.size == 0
+      names.push(:default) if names.empty?
       names.each do |name|
         render_contexts[name.to_s] = { block: block, instance: Context.new(&block) }
       end
