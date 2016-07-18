@@ -79,8 +79,11 @@ module RenderPipeline
     end
 
     self.render_contexts = { 'default' => { block: proc {} } }
-    def self.render_context(name = :default, &block)
-      render_contexts[name.to_s] = { block: block, instance: Context.new(&block) }
+    def self.render_context(*names, &block)
+      names.push(:default) if names.empty?
+      names.each do |name|
+        render_contexts[name.to_s] = { block: block, instance: Context.new(&block) }
+      end
     end
 
     def self.render_context_for(name)
