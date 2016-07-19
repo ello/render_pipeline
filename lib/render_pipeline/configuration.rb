@@ -5,17 +5,9 @@ module RenderPipeline
     include Singleton
 
     class << self
-      attr_accessor :sanitize_rules
       attr_accessor :render_filters, :render_contexts, :render_version_key
       attr_accessor :cache
     end
-
-    self.sanitize_rules = {
-      elements: %w(a b i strong em br),
-      attributes: { 'a' => [ 'href' ] },
-      protocols: { 'a' => { 'href' => [ 'http', 'https', 'mailto' ] } },
-      remove_contents: %w(script embed object style),
-    }
 
     self.render_filters = [
       RenderPipeline::Filter::Mentions,
