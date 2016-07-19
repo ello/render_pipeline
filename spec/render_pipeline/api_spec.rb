@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe RenderPipeline do
   describe '.render' do
-
     it 'should convert @ mentions to links' do
       result = subject.render('<div>@username</div>')
       expect(result).to eq('<div><a href="/username" class="user-mention">@username</a></div>')
@@ -36,37 +35,5 @@ describe RenderPipeline do
         <p><img class="emoji" title=":grin:" alt=":grin:" src="#{src}" height="20" width="20" align="absmiddle"></p>
       HTML
     end
-
-  end
-
-  describe '.sanitize' do
-    let(:html) do
-      <<-HTML.strip_heredoc
-      <script>alert("test")</script>
-      <style>body{}</style>
-      <table>table</table>
-      <a href="ftp://cnn.com" onclick="alert("test")">cnn</a>
-      <a href="javascropt:alert('test')" onclick="alert("test")">cnn</a>
-
-      <a href="mailto:jejacks0n@gmail.com">je<br>jacks0n</a>
-      <a href='http://cnn.com'><i>cnn</i></a>
-      <a href="https://cnn.com"><strong>secure</strong> <em>cnn</em></a>
-      HTML
-    end
-
-    it 'sanitizes the markup' do
-      expect(subject.sanitize(html)).to eq <<-HTML.strip_heredoc
-
-
-      table
-      <a>cnn</a>
-      <a>cnn</a>
-
-      <a href="mailto:jejacks0n@gmail.com">je<br>jacks0n</a>
-      <a href="http://cnn.com"><i>cnn</i></a>
-      <a href="https://cnn.com"><strong>secure</strong> <em>cnn</em></a>
-      HTML
-    end
-
   end
 end

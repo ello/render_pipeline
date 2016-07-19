@@ -8,7 +8,6 @@ require 'truncato'
 require 'rumoji'
 require 'pygments'
 require 'fastimage'
-require 'sanitize'
 
 module RenderPipeline
   module Filter
@@ -23,14 +22,9 @@ module RenderPipeline
     autoload :SyntaxHighlighter, 'render_pipeline/filters/syntax_highlighter'
   end
 
-  def self.sanitize(html, rules = {})
-    Sanitize.clean(html, RenderPipeline.configuration.sanitize_rules.merge(rules))
-  end
-
   def self.render(content, options = {})
     Renderer.new(content).render(options)
   end
-
 end
 
 require 'render_pipeline/configuration'
