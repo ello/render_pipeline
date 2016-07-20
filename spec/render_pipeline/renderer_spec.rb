@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe RenderPipeline::Renderer do
   subject { described_class }
+  let(:click_service_url) { 'https://o.ello.co' }
   let(:content) do
     <<-CONTENT.strip_heredoc
     hey everybody<br/>this is\u00a0 some<br>test&nbsp;content.
@@ -46,14 +47,14 @@ describe RenderPipeline::Renderer do
   it 'should only single encode ampersands in URLs' do
     rendered_links = subject.new(broken_links).render
     expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
-    <p><a href="http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
+    <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
     HTML
   end
 
   it 'should also ignore already encoded ampersands and not replace them' do
     rendered_links = subject.new(encoded_links).render
     expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
-    <p><a href="http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
+    <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
     HTML
   end
 
