@@ -24,6 +24,7 @@ module RenderPipeline
             element['rel'] = 'nofollow'
             element['target'] = '_blank'
             element['href'] = CGI.unescapeHTML(element['href'])
+            element['href'] = (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + element['href']
           end
         end
         doc
