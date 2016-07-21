@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RenderPipeline::Renderer do
+describe RenderPipeline::Renderer, vcr: true do
   subject { described_class }
   let(:click_service_url) { 'https://o.ello.co' }
   let(:content) do
