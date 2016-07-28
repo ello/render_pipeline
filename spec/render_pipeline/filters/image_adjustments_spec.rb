@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RenderPipeline::Filter::ImageAdjustments do
+describe RenderPipeline::Filter::ImageAdjustments, vcr: true do
   subject { described_class }
   # Direct URIs have disappeared, this may be better long term
   let(:src) { 'http://lorempixel.com/96/33/sports/1/' }

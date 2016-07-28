@@ -1,0 +1,72 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://lorempixel.com/96/33/sports/1/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - identity
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 21 Jul 2016 04:51:09 GMT
+      Server:
+      - Apache/2.4.10 (Debian)
+      Expires:
+      - Fri, 30 Oct 1998 14:19:41 GMT
+      Cache-Control:
+      - no-cache, no-store
+      Pragma:
+      - no-cache
+      Content-Length:
+      - '1429'
+      Content-Type:
+      - image/jpeg
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        /9j/4AAQSkZJRgABAQEAYABgAAD//gA7Q1JFQVRPUjogZ2QtanBlZyB2MS4w
+        ICh1c2luZyBJSkcgSlBFRyB2NjIpLCBxdWFsaXR5ID0gNzAK/9sAQwAKBwcI
+        BwYKCAgICwoKCw4YEA4NDQ4dFRYRGCMfJSQiHyIhJis3LyYpNCkhIjBBMTQ5
+        Oz4+PiUuRElDPEg3PT47/9sAQwEKCwsODQ4cEBAcOygiKDs7Ozs7Ozs7Ozs7
+        Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7/8AAEQgA
+        IQBgAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkK
+        C//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGh
+        CCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RV
+        VldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeo
+        qaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX2
+        9/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIB
+        AgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1Lw
+        FWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2Rl
+        ZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2
+        t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwD
+        AQACEQMRAD8A9OMgHU4zS+ZWJ4k0CPxFYR2sly8AjkEgZBnnBH9a5n/hX+rW
+        v/Hj4lmUDoCGT+TGvGTXc9Cx6AZDXg3xYu79PHcha6cJFHG1sEcjyxtGceh3
+        A10Ot2XjvwxptxqkniJZbWDaW/es78kKOGXHUjvXldzcyXlxJc3EskssjFne
+        Rskk+9dmHhrzXujCq9LH0r4WvJ7vwrpdxcPI80lpGztJ95jtHJ+vWtQyVw3w
+        xGtQ+Hkg1GNfsYjSSylEgYsrDJXA5GOOtdmTXDVlyzaOiCvFMkMhpDIaiJpC
+        axc2aKKJDKaYZTTCaaahyZaihzSE96jLn1pDmo2BpFWsaeKTaaw9G8a6NqsR
+        L3EdpNkgQTSLvIAznrTv+E68MeYqDWLf5iRndwPrXTyHPzF3WNJtta0m4068
+        TfBOuGGSOQcg8ehANfMdyV891jUKgY4A5xX0zd6nZ6hptzBp2o2zXU0DLBiU
+        ffKnbXzVPZSWyzRzRvHcW8pSVG4K9v513YTRM5q2tj3z4asZvh/pbE5IV1/K
+        Rh/Suo8uvMfht8RNMj0618P6mqWUkI2Qz9I5Oc8/3Tz16H2r0iLVdNuJ/Iiv
+        YHlP8CuCa5a1O03fqbU53irEvl0nl05ri3WURmVdxUtjPanjay7lIYHuDWPK
+        jTmZTuJEgA3EDkcntVZL+BrpLdm+eViqAAnoMn6Umr2kspXA3wk8jPI/xFZf
+        hRJBG4kdjiZwS3UkMRWbiaJ6HQmKo2jAHNM1DV7HTUJurmOMgZwWGa8/1j4i
+        ySzGLT7cMobhnzzz6U1Scn7oue255hN/rvwNUV+9RRXux2POZ02l/wDH1bf7
+        y0njH/kYtY+sf8loornh/E/rujWXwnLVveHv+QxB/ntRRW9X4WZU/iOnj+/c
+        /wDXuf8A0IV6f4J/5Fq3/H+dFFeZPodnQ2bv/j3asPTv+W3/AF8Sf+hGiiua
+        pua09jzHxd/yM1z/AL39KyrL/j5P+fSiivQh8CMJfEf/2Q==
+    http_version: 
+  recorded_at: Thu, 21 Jul 2016 04:51:11 GMT
+recorded_with: VCR 3.0.3

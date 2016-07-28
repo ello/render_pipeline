@@ -11,7 +11,11 @@ describe RenderPipeline::Filter::LinkAdjustments do
 
   it 'adds a nofollow and sets the target on external links' do
     result = subject.to_html('<a href="http://www.example.com/test">Test</a>', context)
-    expect(result).to eq('<a href="http://www.example.com/test" rel="nofollow" target="_blank">Test</a>')
+    expect(result).to eq('<a href="https://o.ello.co/http://www.example.com/test" rel="nofollow" target="_blank">Test</a>')
   end
 
+  it 'prepends the click service url on external links' do
+    result = subject.to_html('<a href="http://www.example.com/test">Test</a>', context)
+    expect(result).to eq('<a href="https://o.ello.co/http://www.example.com/test" rel="nofollow" target="_blank">Test</a>')
+  end
 end
