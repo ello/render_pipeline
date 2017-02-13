@@ -5,7 +5,6 @@ require 'rinku'
 require 'gemoji'
 require 'redcarpet'
 require 'truncato'
-require 'rumoji'
 require 'fastimage'
 
 module RenderPipeline
@@ -17,7 +16,6 @@ module RenderPipeline
     autoload :LinkAdjustments, 'render_pipeline/filters/link_adjustments'
     autoload :Markdown, 'render_pipeline/filters/markdown'
     autoload :Mentions, 'render_pipeline/filters/mentions'
-    autoload :Rumoji, 'render_pipeline/filters/rumoji'
   end
 
   def self.render(content, options = {})

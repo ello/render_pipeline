@@ -26,14 +26,5 @@ describe RenderPipeline do
       result = subject.render('<div>@user_name</div>')
       expect(result).to eq('<div><a href="/user_name" class="user-mention">@user_name</a></div>')
     end
-
-    it 'converts unicode emoji into their image equivalents' do
-      result = subject.render("\xF0\x9F\x98\x81")
-      src = "#{subject.configuration.render_context_for(:default)[:asset_root]}/emoji/unicode/1f601.png"
-
-      expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-        <p><img class="emoji" title=":grin:" alt=":grin:" src="#{src}" height="20" width="20" align="absmiddle"></p>
-      HTML
-    end
   end
 end

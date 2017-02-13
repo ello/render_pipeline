@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'gemoji'
   s.add_dependency 'redcarpet', '>= 3.3.2'
   s.add_dependency 'truncato'
-  s.add_dependency 'rumoji'
   s.add_dependency 'fastimage'
 
   s.add_development_dependency 'bundler'
