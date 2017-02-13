@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'github-markdown'
   s.add_dependency 'truncato'
   s.add_dependency 'rumoji'
-  s.add_dependency 'pygments.rb'
+  s.add_dependency 'pygments.rb', '~> 0.6.3'
   s.add_dependency 'fastimage'
 
   s.add_development_dependency 'bundler'
