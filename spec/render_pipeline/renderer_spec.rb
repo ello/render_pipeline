@@ -50,6 +50,12 @@ describe RenderPipeline::Renderer, vcr: true do
     CONTENT
   end
 
+  let(:emoji) do
+    <<-CONTENT.strip_heredoc
+      :business_suit_levitating:
+    CONTENT
+  end
+
   it 'should only single encode ampersands in URLs' do
     rendered_links = subject.new(broken_links).render
     expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
@@ -104,6 +110,14 @@ describe RenderPipeline::Renderer, vcr: true do
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
       <p>[Click me](javascript:alert("Hello!"))</p>
+    HTML
+  end
+
+  it 'properly encodes emoji shortcuts' do
+    result = subject.new(emoji).render
+
+    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+      <p><img class="emoji" title=":business_suit_levitating:" alt=":business_suit_levitating:" src="http://example.com/images/emoji/unicode/1f574.png" height="20" width="20" align="absmiddle"></p>
     HTML
   end
 

@@ -11,10 +11,10 @@ module RenderPipeline
 
     self.render_filters = [
       RenderPipeline::Filter::Mentions,
+      RenderPipeline::Filter::Emoji,
       RenderPipeline::Filter::Markdown,
       RenderPipeline::Filter::Code,
       RenderPipeline::Filter::Hashtag,
-      RenderPipeline::Filter::Emoji,
       RenderPipeline::Filter::LinkAdjustments,
       RenderPipeline::Filter::ImageAdjustments,
     ]
