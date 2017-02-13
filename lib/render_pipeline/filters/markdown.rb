@@ -9,7 +9,10 @@ module RenderPipeline
       private
 
       def parser
-        Redcarpet::Markdown.new(renderer, fenced_code_blocks: true, autolink: true)
+        Redcarpet::Markdown.new(renderer,
+                                fenced_code_blocks: true,
+                                autolink: true,
+                                strikethrough: true)
       end
 
       def renderer

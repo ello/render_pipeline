@@ -56,6 +56,12 @@ describe RenderPipeline::Renderer, vcr: true do
     CONTENT
   end
 
+  let(:strikethrough) do
+    <<-CONTENT.strip_heredoc
+      ~~@ello~~
+    CONTENT
+  end
+
   it 'should only single encode ampersands in URLs' do
     rendered_links = subject.new(broken_links).render
     expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
@@ -118,6 +124,14 @@ describe RenderPipeline::Renderer, vcr: true do
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
       <p><img class="emoji" title=":business_suit_levitating:" alt=":business_suit_levitating:" src="http://example.com/images/emoji/unicode/1f574.png" height="20" width="20" align="absmiddle"></p>
+    HTML
+  end
+
+  it 'properly encodes strikethroughs' do
+    result = subject.new(strikethrough).render
+
+    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+      <p><del><a href="/ello" class="user-mention">@ello</a></del></p>
     HTML
   end
 
