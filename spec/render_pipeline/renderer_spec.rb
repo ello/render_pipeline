@@ -112,7 +112,7 @@ describe RenderPipeline::Renderer, vcr: true do
   end
 
   it 'can truncate the response' do
-    result = subject.new(content).render(context: :truncate)
+    result = subject.new(content).render(truncate: 13, truncate_tail: '<<<')
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
     <p>hey everybody&lt;&lt;&lt;</p>
     HTML
@@ -125,4 +125,19 @@ describe RenderPipeline::Renderer, vcr: true do
     expect(HTML::Pipeline).to receive(:new).with('_render_filters_', hash).and_return(call_stub)
     expect(subject.new(content).render).to eq('_output_')
   end
+
+  it 'caches the results if there is a cache to use (assumes Rails.cache)' do
+    cache_stub = double(fetch: '_cached_output_')
+    expect(RenderPipeline.configuration).to receive(:cache).and_return(cache_stub)
+    expect(cache_stub).to receive(:fetch).with('d0ca634e714f3602976a270a80968943').and_return('_cached_output_')
+    expect(subject.new(content).render).to eq('_cached_output_')
+  end
+
+  it 'caches the results based on options' do
+    cache_stub = double(fetch: '_cached_output_')
+    expect(RenderPipeline.configuration).to receive(:cache).and_return(cache_stub)
+    expect(cache_stub).to receive(:fetch).with('94a838e8df0191dc8995965aa1ea5172').and_return('_cached_output_')
+    expect(subject.new(content).render(foo: 'bar')).to eq('_cached_output_')
+  end
+
 end
