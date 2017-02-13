@@ -3,10 +3,9 @@ require 'html/pipeline'
 require 'nokogiri'
 require 'rinku'
 require 'gemoji'
-require 'github/markdown'
+require 'redcarpet'
 require 'truncato'
 require 'rumoji'
-require 'pygments'
 require 'fastimage'
 
 module RenderPipeline
@@ -19,7 +18,6 @@ module RenderPipeline
     autoload :Markdown, 'render_pipeline/filters/markdown'
     autoload :Mentions, 'render_pipeline/filters/mentions'
     autoload :Rumoji, 'render_pipeline/filters/rumoji'
-    autoload :SyntaxHighlighter, 'render_pipeline/filters/syntax_highlighter'
   end
 
   def self.render(content, options = {})
