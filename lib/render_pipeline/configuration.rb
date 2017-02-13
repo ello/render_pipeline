@@ -44,10 +44,7 @@ module RenderPipeline
         :hashtag_root,
         :hashtag_pattern,
         :hashtag_ignored_ancestor_tags,
-        :hashtag_classlist,
-        # truncation
-        :truncate_length,
-        :truncate_tail
+        :hashtag_classlist
       ]
       attr_accessor(*SETTINGS)
 
@@ -62,7 +59,6 @@ module RenderPipeline
         @hashtag_classlist = 'hashtag-link'
         @hashtag_pattern = /\B(#\w+)/
         @hashtag_ignored_ancestor_tags = ''
-        @truncate_tail = '...'
 
         default = RenderPipeline.configuration.render_contexts['default']
         instance_eval(&default[:block]) if default

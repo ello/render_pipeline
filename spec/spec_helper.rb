@@ -24,11 +24,6 @@ RSpec.configure do |config|
       render_config.render_context :lite do |c|
         c.render_filters = RenderPipeline.configuration.render_filters - [RenderPipeline::Filter::ImageAdjustments]
       end
-
-      render_config.render_context :truncate do |c|
-        c.truncate_length = 13
-        c.truncate_tail = '<<<'
-      end
     end
   end
 end

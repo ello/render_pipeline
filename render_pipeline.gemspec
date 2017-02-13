@@ -16,14 +16,15 @@ Gem::Specification.new do |s|
   s.files       = Dir['{lib}/**/*'] + ['README.md']
   s.test_files  = `git ls-files -- {spec}/*`.split("\n")
 
-  s.add_dependency 'nokogiri', '>= 1.6.8'
+  s.add_dependency 'activesupport'
+  s.add_dependency 'nokogiri', '>= 1.6.7.2'
   s.add_dependency 'html-pipeline', '~> 2.0'
   s.add_dependency 'rinku'
   s.add_dependency 'gemoji'
   s.add_dependency 'github-markdown'
   s.add_dependency 'truncato'
   s.add_dependency 'rumoji'
-  s.add_dependency 'pygments.rb'
+  s.add_dependency 'pygments.rb', '~> 0.6.3'
   s.add_dependency 'fastimage'
 
   s.add_development_dependency 'bundler'
