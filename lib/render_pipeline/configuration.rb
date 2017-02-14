@@ -10,9 +10,9 @@ module RenderPipeline
     end
 
     self.render_filters = [
-      RenderPipeline::Filter::Mentions,
       RenderPipeline::Filter::Emoji,
       RenderPipeline::Filter::Markdown,
+      RenderPipeline::Filter::Mentions,
       RenderPipeline::Filter::Code,
       RenderPipeline::Filter::Hashtag,
       RenderPipeline::Filter::LinkAdjustments,
