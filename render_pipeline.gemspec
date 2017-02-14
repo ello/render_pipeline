@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport'
   s.add_dependency 'nokogiri', '>= 1.6.8'
   s.add_dependency 'html-pipeline', '~> 2.0'
-  s.add_dependency 'rinku'
   s.add_dependency 'gemoji'
   s.add_dependency 'redcarpet', '>= 3.3.2'
   s.add_dependency 'truncato'
