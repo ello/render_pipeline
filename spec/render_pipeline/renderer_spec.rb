@@ -62,6 +62,12 @@ describe RenderPipeline::Renderer, vcr: true do
     CONTENT
   end
 
+  let(:hashtag) do
+    <<-CONTENT.strip_heredoc
+      #hashtag
+    CONTENT
+  end
+
   it 'should only single encode ampersands in URLs' do
     rendered_links = subject.new(broken_links).render
     expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
@@ -132,6 +138,14 @@ describe RenderPipeline::Renderer, vcr: true do
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
       <p><del><a href="/ello" class="user-mention">@ello</a></del></p>
+    HTML
+  end
+
+  it 'properly encodes hashtags' do
+    result = subject.new(hashtag).render
+
+    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+      <p><a href="https://o.ello.co/http://example.com/search?terms=%23hashtag" data-href="http://example.com/search?terms=%23hashtag" data-capture="hashtagClick" class="hashtag-link" rel="nofollow" target="_blank">#hashtag</a></p>
     HTML
   end
 
