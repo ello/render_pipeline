@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.files       = Dir['{lib}/**/*'] + ['README.md']
   s.test_files  = `git ls-files -- {spec}/*`.split("\n")
 
-  s.add_dependency 'activesupport'
   s.add_dependency 'nokogiri', '>= 1.6.8'
   s.add_dependency 'html-pipeline', '~> 2.0'
   s.add_dependency 'gemoji'

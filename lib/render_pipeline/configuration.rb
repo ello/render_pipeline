@@ -5,8 +5,8 @@ module RenderPipeline
     include Singleton
 
     class << self
-      attr_accessor :render_filters, :render_contexts, :render_version_key
-      attr_accessor :cache
+      attr_accessor :render_filters,
+                    :render_contexts
     end
 
     self.render_filters = [
@@ -18,8 +18,6 @@ module RenderPipeline
       RenderPipeline::Filter::LinkAdjustments,
       RenderPipeline::Filter::ImageAdjustments,
     ]
-
-    self.cache = nil
 
     def self.add_emoji(emoji)
       Emoji.create(emoji)
