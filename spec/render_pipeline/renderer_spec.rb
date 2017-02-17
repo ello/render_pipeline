@@ -62,6 +62,12 @@ describe RenderPipeline::Renderer, vcr: true do
     CONTENT
   end
 
+  let(:mention) do
+    <<-CONTENT.strip_heredoc
+      @ello_some_user
+    CONTENT
+  end
+
   let(:hashtag) do
     <<-CONTENT.strip_heredoc
       #hashtag
@@ -133,11 +139,19 @@ describe RenderPipeline::Renderer, vcr: true do
     HTML
   end
 
-  it 'properly encodes strikethroughs' do
+  it 'properly encodes strikethroughs containing mentions' do
     result = subject.new(strikethrough).render
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
       <p><del><a href="/ello" class="user-mention">@ello</a></del></p>
+    HTML
+  end
+
+  it 'properly encodes mentions' do
+    result = subject.new(mention).render
+
+    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+      <p><a href="/ello_some_user" class="user-mention">@ello_some_user</a></p>
     HTML
   end
 
