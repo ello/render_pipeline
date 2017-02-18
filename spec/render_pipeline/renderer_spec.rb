@@ -70,7 +70,7 @@ describe RenderPipeline::Renderer, vcr: true do
 
   let(:hashtag) do
     <<-CONTENT.strip_heredoc
-      #hashtag
+      #hashtag_with_underscores
     CONTENT
   end
 
@@ -159,7 +159,7 @@ describe RenderPipeline::Renderer, vcr: true do
     result = subject.new(hashtag).render
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      <p><a href="https://o.ello.co/http://example.com/search?terms=%23hashtag" data-href="http://example.com/search?terms=%23hashtag" data-capture="hashtagClick" class="hashtag-link" rel="nofollow" target="_blank">#hashtag</a></p>
+      <p><a href="https://o.ello.co/http://example.com/search?terms=%23hashtag_with_underscores" data-href="http://example.com/search?terms=%23hashtag_with_underscores" data-capture="hashtagClick" class="hashtag-link" rel="nofollow" target="_blank">#hashtag_with_underscores</a></p>
     HTML
   end
 
