@@ -12,7 +12,8 @@ module RenderPipeline
         Redcarpet::Markdown.new(renderer,
                                 fenced_code_blocks: true,
                                 autolink: true,
-                                strikethrough: true)
+                                strikethrough: true,
+                                no_intra_emphasis: true)
       end
 
       def renderer
