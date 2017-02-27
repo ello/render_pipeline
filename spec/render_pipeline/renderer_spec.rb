@@ -56,6 +56,12 @@ describe RenderPipeline::Renderer, vcr: true do
     CONTENT
   end
 
+  let(:emoji_in_code) do
+    <<-CONTENT.strip_heredoc
+      `:business_suit_levitating:`
+    CONTENT
+  end
+
   let(:strikethrough) do
     <<-CONTENT.strip_heredoc
       ~~@ello~~
@@ -136,6 +142,13 @@ describe RenderPipeline::Renderer, vcr: true do
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
       <p><img class="emoji" title=":business_suit_levitating:" alt=":business_suit_levitating:" src="http://example.com/images/emoji/unicode/1f574.png" height="20" width="20" align="absmiddle"></p>
+    HTML
+  end
+
+  it 'should not encode emoji within code blocks' do
+    rendered_code = subject.new(emoji_in_code).render
+    expect("#{rendered_code}\n").to eq(<<-HTML.strip_heredoc)
+      <p><code>:business_suit_levitating:</code></p>
     HTML
   end
 
