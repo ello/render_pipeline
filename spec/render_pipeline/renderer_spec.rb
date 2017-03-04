@@ -80,6 +80,15 @@ describe RenderPipeline::Renderer, vcr: true do
     CONTENT
   end
 
+  let(:table) do
+    <<-CONTENT.strip_heredoc
+      |#|Count|Category|
+      | ---:| ---:|:--- |
+      |1|7311|Dogs|
+      |2|47573|Arts|
+    CONTENT
+  end
+
   it 'should only single encode ampersands in URLs' do
     rendered_links = subject.new(broken_links).render
     expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
@@ -173,6 +182,34 @@ describe RenderPipeline::Renderer, vcr: true do
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
       <p><a href="https://o.ello.co/http://example.com/search?terms=%23hashtag_with_underscores" data-href="http://example.com/search?terms=%23hashtag_with_underscores" data-capture="hashtagClick" class="hashtag-link" rel="nofollow" target="_blank">#hashtag_with_underscores</a></p>
+    HTML
+  end
+
+  it 'properly encodes tables' do
+    result = subject.new(table).render
+
+    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+       <table>
+       <thead>
+       <tr>
+       <th style="text-align: right">#</th>
+       <th style="text-align: right">Count</th>
+       <th style="text-align: left">Category</th>
+       </tr>
+       </thead>
+       <tbody>
+       <tr>
+       <td style="text-align: right">1</td>
+       <td style="text-align: right">7311</td>
+       <td style="text-align: left">Dogs</td>
+       </tr>
+       <tr>
+       <td style="text-align: right">2</td>
+       <td style="text-align: right">47573</td>
+       <td style="text-align: left">Arts</td>
+       </tr>
+       </tbody>
+       </table>
     HTML
   end
 
