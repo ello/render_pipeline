@@ -9,13 +9,21 @@ describe RenderPipeline::Filter::LinkAdjustments do
     expect(result).to eq('<a href="/thomashawk/posts/1">Post</a>')
   end
 
-  it 'adds a nofollow and sets the target on external links' do
+  it 'adds nofollow/noopener to external links' do
     result = subject.to_html('<a href="http://www.example.com/test">Test</a>', context)
-    expect(result).to eq('<a href="https://o.ello.co/http://www.example.com/test" rel="nofollow" target="_blank">Test</a>')
+    a = Nokogiri::XML(result).at_css('a')
+    expect(a['rel']).to eq('nofollow noopener')
+  end
+
+  it 'sets target for external links' do
+    result = subject.to_html('<a href="http://www.example.com/test">Test</a>', context)
+    a = Nokogiri::XML(result).at_css('a')
+    expect(a['target']).to eq('_blank')
   end
 
   it 'prepends the click service url on external links' do
     result = subject.to_html('<a href="http://www.example.com/test">Test</a>', context)
-    expect(result).to eq('<a href="https://o.ello.co/http://www.example.com/test" rel="nofollow" target="_blank">Test</a>')
+    a = Nokogiri::XML(result).at_css('a')
+    expect(a['href']).to eq('https://o.ello.co/http://www.example.com/test')
   end
 end

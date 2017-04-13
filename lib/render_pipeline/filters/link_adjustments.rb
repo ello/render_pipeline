@@ -21,7 +21,7 @@ module RenderPipeline
 
           # adjust links that are not relative.
           if element['href'][0] != '/'
-            element['rel'] = 'nofollow'
+            element['rel'] = 'nofollow noopener'
             element['target'] = '_blank'
             element['href'] = CGI.unescapeHTML(element['href'])
             element['href'] = (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + element['href']
