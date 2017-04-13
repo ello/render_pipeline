@@ -83,14 +83,14 @@ describe RenderPipeline::Renderer, vcr: true do
   it 'should only single encode ampersands in URLs' do
     rendered_links = subject.new(broken_links).render
     expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
-    <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
+    <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow noopener" target="_blank">here is code</a></p>
     HTML
   end
 
   it 'should also ignore already encoded ampersands and not replace them' do
     rendered_links = subject.new(encoded_links).render
     expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
-    <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
+    <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow noopener" target="_blank">here is code</a></p>
     HTML
   end
 
@@ -172,7 +172,7 @@ describe RenderPipeline::Renderer, vcr: true do
     result = subject.new(hashtag).render
 
     expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      <p><a href="https://o.ello.co/http://example.com/search?terms=%23hashtag_with_underscores" data-href="http://example.com/search?terms=%23hashtag_with_underscores" data-capture="hashtagClick" class="hashtag-link" rel="nofollow" target="_blank">#hashtag_with_underscores</a></p>
+      <p><a href="https://o.ello.co/http://example.com/search?terms=%23hashtag_with_underscores" data-href="http://example.com/search?terms=%23hashtag_with_underscores" data-capture="hashtagClick" class="hashtag-link" rel="nofollow noopener" target="_blank">#hashtag_with_underscores</a></p>
     HTML
   end
 
