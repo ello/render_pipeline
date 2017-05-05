@@ -53,7 +53,7 @@ module RenderPipeline
         @username_link_cleaner_pattern = /(>@[\w\-]*?)(_{1,3}[\w\-]+_{1,3}[\w\-]*?<\/a>)/
         @hashtag_root = ''
         @hashtag_classlist = 'hashtag-link'
-        @hashtag_pattern = /\B(#\w+)/
+        @hashtag_pattern = /\B(#[[:word:]]+)/
         @hashtag_ignored_ancestor_tags = ''
 
         default = RenderPipeline.configuration.render_contexts['default']

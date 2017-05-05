@@ -185,6 +185,20 @@ describe RenderPipeline::Renderer, vcr: true do
     HTML
   end
 
+  let(:hashtag_with_diacritics) do
+    <<-CONTENT.strip_heredoc
+      #Göteborg
+    CONTENT
+  end
+
+  it 'properly encodes hashtags containing diacritics' do
+    result = subject.new(hashtag_with_diacritics).render
+
+    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+      <p><a href="https://o.ello.co/http://example.com/search?terms=%23G%C3%B6teborg" data-href="http://example.com/search?terms=%23Göteborg" data-capture="hashtagClick" class="hashtag-link" rel="nofollow noopener" target="_blank">#Göteborg</a></p>
+    HTML
+  end
+
   it 'properly encodes tables' do
     result = subject.new(table).render
 
