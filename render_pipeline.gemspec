@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'redcarpet', '>= 3.3.2'
   s.add_dependency 'truncato'
   s.add_dependency 'fastimage'
+  s.add_dependency 'sanitize'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'

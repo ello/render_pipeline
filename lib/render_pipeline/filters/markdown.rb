@@ -13,7 +13,8 @@ module RenderPipeline
                                 fenced_code_blocks: true,
                                 autolink: true,
                                 strikethrough: true,
-                                no_intra_emphasis: true)
+                                no_intra_emphasis: true,
+                                space_after_headers: true)
       end
 
       def renderer

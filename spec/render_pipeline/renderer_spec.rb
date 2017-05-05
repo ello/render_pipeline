@@ -10,170 +10,233 @@ describe RenderPipeline::Renderer, vcr: true do
     CONTENT
   end
 
-  let(:broken_links) { '[here is code](http://example.com?one=two&three=4)' }
-  let(:broken_code) do
-    <<-CONTENT.strip_heredoc
-    ```ruby
-    if 2 > 1
-      do_something.each |do|
-        what_else_breaks && who_knows?
+  describe 'rendering content' do
+    let(:result) { subject.new(content).render }
+
+    describe 'given ampersands in URLs' do
+      let(:content) do
+        '[here is code](http://example.com?one=two&three=4)'
+      end
+
+      it 'should only single-encode them' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+        <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
+        HTML
       end
     end
-    ```
-    CONTENT
-  end
-  let(:encoded_links) { '[here is code](http://example.com?one=two&amp;three=4)' }
-  let(:encoded_code) do
-    <<-CONTENT.strip_heredoc
-    ```ruby
-    if 2 &gt; 1
-      do_something.each |do|
-        what_else_breaks &amp;&amp; who_knows?
+
+    describe 'given already-encoded ampersands in URLs' do
+      let(:content) { '[here is code](http://example.com?one=two&amp;three=4)' }
+
+      it 'should ignore and not replace them' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+        <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
+        HTML
       end
     end
-    ```
-    CONTENT
-  end
 
-  let(:xss_content) do
-    <<-CONTENT.strip_heredoc
-    ```
-      &lt;script&gt;alert('good example!');&lt;/script&gt;
-    ```
-    &lt;script&gt;alert('what happened');&lt;/script&gt;
-    CONTENT
-  end
 
-  let(:xss_markdown) do
-    <<-CONTENT.strip_heredoc
-      [Click me](javascript:alert("Hello!"))
-    CONTENT
-  end
-
-  let(:emoji) do
-    <<-CONTENT.strip_heredoc
-      :business_suit_levitating:
-    CONTENT
-  end
-
-  let(:emoji_in_code) do
-    <<-CONTENT.strip_heredoc
-      `:business_suit_levitating:`
-    CONTENT
-  end
-
-  let(:strikethrough) do
-    <<-CONTENT.strip_heredoc
-      ~~@ello~~
-    CONTENT
-  end
-
-  let(:mention) do
-    <<-CONTENT.strip_heredoc
-      @ello_some_user
-    CONTENT
-  end
-
-  let(:hashtag) do
-    <<-CONTENT.strip_heredoc
-      #hashtag_with_underscores
-    CONTENT
-  end
-
-  it 'should only single encode ampersands in URLs' do
-    rendered_links = subject.new(broken_links).render
-    expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
-    <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
-    HTML
-  end
-
-  it 'should also ignore already encoded ampersands and not replace them' do
-    rendered_links = subject.new(encoded_links).render
-    expect("#{rendered_links}\n").to eq(<<-HTML.strip_heredoc)
-    <p><a href="#{click_service_url}/http://example.com?one=two&amp;three=4" rel="nofollow" target="_blank">here is code</a></p>
-    HTML
-  end
-
-  it 'should not destroy code by double escaping &s' do
-    rendered_code = subject.new(broken_code).render
-    expect("#{rendered_code}\n").to eq(<<-HTML.strip_heredoc)
-      <pre><code class="ruby">if 2 &gt; 1
-        do_something.each |do|
-          what_else_breaks &amp;&amp; who_knows?
+    describe 'given code that includes ampersands' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+        ```ruby
+        if 2 > 1
+          do_something.each |do|
+            what_else_breaks && who_knows?
+          end
         end
+        ```
+        CONTENT
       end
-      </code></pre>
-    HTML
-  end
 
-  it 'should also ignore already encoded code' do
-    rendered_code = subject.new(encoded_code).render
-    expect("#{rendered_code}\n").to eq(<<-HTML.strip_heredoc)
-      <pre><code class="ruby">if 2 &gt; 1
-        do_something.each |do|
-          what_else_breaks &amp;&amp; who_knows?
+      it 'should not destroy code by double escaping &s' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <pre><code>if 2 &gt; 1
+            do_something.each |do|
+              what_else_breaks &amp;&amp; who_knows?
+            end
+          end
+          </code></pre>
+        HTML
+      end
+    end
+
+    describe 'given code that includes escaped ampersands' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+        ```ruby
+        if 2 &gt; 1
+          do_something.each |do|
+            what_else_breaks &amp;&amp; who_knows?
+          end
         end
+        ```
+        CONTENT
       end
-      </code></pre>
-    HTML
-  end
 
-  it 'properly encodes script tags' do
-    result = subject.new(xss_content).render
+      it 'should still ignore already-encoded code' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <pre><code>if 2 &gt; 1
+            do_something.each |do|
+              what_else_breaks &amp;&amp; who_knows?
+            end
+          end
+          </code></pre>
+        HTML
+      end
+    end
 
-    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      <pre><code>  &lt;script&gt;alert('good example!');&lt;/script&gt;
-      </code></pre>
+    describe 'given code with escaped script tags in it that poses an XSS threat' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+        ```
+          &lt;script&gt;alert('good example!');&lt;/script&gt;
+        ```
+        &lt;script&gt;alert('what happened');&lt;/script&gt;
+        CONTENT
+      end
 
-      <p>&lt;script&gt;alert('what happened');&lt;/script&gt;</p>
-    HTML
-  end
+      it 'properly encodes/strips the script tags' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <pre><code>  &lt;script&gt;alert('good example!');&lt;/script&gt;
+          </code></pre>
 
-  it 'properly removes unsafe markdown links' do
-    result = subject.new(xss_markdown).render
+          <p>&lt;script&gt;alert('what happened');&lt;/script&gt;</p>
+        HTML
+      end
+    end
 
-    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      <p>[Click me](javascript:alert("Hello!"))</p>
-    HTML
-  end
+    describe 'given code with unescaped script tags in it that poses an XSS threat' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+        ```
+          <script>alert('good example!');</script>
+        ```
+        <script>alert('what happened');</script>
+        CONTENT
+      end
 
-  it 'properly encodes emoji shortcuts' do
-    result = subject.new(emoji).render
+      it 'properly encodes/strips the script tags' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <pre><code>  &lt;script&gt;alert('good example!');&lt;/script&gt;
+          </code></pre>
+        HTML
+      end
+    end
 
-    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      <p><img class="emoji" title=":business_suit_levitating:" alt=":business_suit_levitating:" src="http://example.com/images/emoji/unicode/1f574.png" height="20" width="20" align="absmiddle"></p>
-    HTML
-  end
+    describe 'given markdown with unsafe links' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+          [Click me](javascript:alert("Hello!"))
+        CONTENT
+      end
 
-  it 'should not encode emoji within code blocks' do
-    rendered_code = subject.new(emoji_in_code).render
-    expect("#{rendered_code}\n").to eq(<<-HTML.strip_heredoc)
-      <p><code>:business_suit_levitating:</code></p>
-    HTML
-  end
+      it 'properly removes the unsafe links' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <p>[Click me](javascript:alert("Hello!"))</p>
+        HTML
+      end
+    end
 
-  it 'properly encodes strikethroughs containing mentions' do
-    result = subject.new(strikethrough).render
+    describe 'given emoji shortcuts' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+          :business_suit_levitating:
+        CONTENT
+      end
 
-    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      <p><del><a href="/ello" class="user-mention">@ello</a></del></p>
-    HTML
-  end
+      it 'properly encodes the emoji shortcuts' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <p><img class="emoji" title=":business_suit_levitating:" alt=":business_suit_levitating:" src="http://example.com/images/emoji/unicode/1f574.png" height="20" width="20" align="absmiddle"></p>
+        HTML
+      end
+    end
 
-  it 'properly encodes mentions' do
-    result = subject.new(mention).render
+    describe 'given emoji shortcuts inside code blocks' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+          `:business_suit_levitating:`
+        CONTENT
+      end
 
-    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      <p><a href="/ello_some_user" class="user-mention">@ello_some_user</a></p>
-    HTML
-  end
+      it 'should not encode emoji within code blocks' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <p><code>:business_suit_levitating:</code></p>
+        HTML
+      end
+    end
 
-  it 'properly encodes hashtags' do
-    result = subject.new(hashtag).render
+    describe 'given text with strikethroughs' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+          ~~@ello~~
+        CONTENT
+      end
 
-    expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
-      <p><a href="https://o.ello.co/http://example.com/search?terms=%23hashtag_with_underscores" data-href="http://example.com/search?terms=%23hashtag_with_underscores" data-capture="hashtagClick" class="hashtag-link" rel="nofollow" target="_blank">#hashtag_with_underscores</a></p>
-    HTML
+      it 'properly encodes strikethroughs containing mentions' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <p><del><a href="/ello" class="user-mention">@ello</a></del></p>
+        HTML
+      end
+    end
+
+    describe 'given text with mentions' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+          @ello_some_user
+        CONTENT
+      end
+
+      it 'properly encodes mentions' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <p><a href="/ello_some_user" class="user-mention">@ello_some_user</a></p>
+        HTML
+      end
+    end
+
+    describe 'given text with mentions and underscores' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+          @_ello_some_user
+        CONTENT
+      end
+
+      it 'properly encodes mentions with underscores' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <p><a href="/_ello_some_user" class="user-mention">@_ello_some_user</a></p>
+        HTML
+      end
+    end
+
+    describe 'given text with hashtags' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+          #hashtag_with_underscores
+        CONTENT
+      end
+
+      it 'properly encodes hashtags' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <p><a href="https://o.ello.co/http://example.com/search?terms=%23hashtag_with_underscores" data-href="http://example.com/search?terms=%23hashtag_with_underscores" data-capture="hashtagClick" class="hashtag-link" rel="nofollow" target="_blank">#hashtag_with_underscores</a></p>
+        HTML
+      end
+    end
+
+    describe 'given text with blockquotes' do
+      let(:content) do
+        <<-CONTENT.strip_heredoc
+          > blockquoted content
+        CONTENT
+      end
+
+      it 'properly encodes blockquotes' do
+        expect("#{result}\n").to eq(<<-HTML.strip_heredoc)
+          <blockquote>
+          <p>blockquoted content</p>
+          </blockquote>
+        HTML
+      end
+    end
   end
 
   it 'can render content' do

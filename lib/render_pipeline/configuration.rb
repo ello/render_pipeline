@@ -10,9 +10,10 @@ module RenderPipeline
     end
 
     self.render_filters = [
-      RenderPipeline::Filter::Mentions,
-      RenderPipeline::Filter::Hashtag,
       RenderPipeline::Filter::Markdown,
+      HTML::Pipeline::SanitizationFilter,
+      HTML::Pipeline::MentionFilter,
+      RenderPipeline::Filter::Hashtag,
       RenderPipeline::Filter::Emoji,
       RenderPipeline::Filter::Code,
       RenderPipeline::Filter::LinkAdjustments,
@@ -31,7 +32,6 @@ module RenderPipeline
         :use_absolute_url,
         # mentions
         :username_pattern,
-        :username_link_cleaner_pattern,
         # emoji
         :asset_root,
         # markdown
@@ -50,7 +50,6 @@ module RenderPipeline
         @asset_root = ''
         @gfm = true
         @username_pattern = /[\w\-]+/
-        @username_link_cleaner_pattern = /(>@[\w\-]*?)(_{1,3}[\w\-]+_{1,3}[\w\-]*?<\/a>)/
         @hashtag_root = ''
         @hashtag_classlist = 'hashtag-link'
         @hashtag_pattern = /\B(#\w+)/

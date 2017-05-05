@@ -14,7 +14,6 @@ module RenderPipeline
     autoload :Hashtag, 'render_pipeline/filters/hashtag'
     autoload :LinkAdjustments, 'render_pipeline/filters/link_adjustments'
     autoload :Markdown, 'render_pipeline/filters/markdown'
-    autoload :Mentions, 'render_pipeline/filters/mentions'
   end
 
   def self.render(content, options = {})
