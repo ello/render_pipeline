@@ -24,7 +24,7 @@ module RenderPipeline
             element['rel'] = 'nofollow noopener'
             element['target'] = '_blank'
             element['href'] = CGI.unescapeHTML(element['href'])
-            element['href'] = (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + element['href']
+            element['href'] = prepend_click_service(element['href'])
           end
         end
         doc
@@ -37,6 +37,15 @@ module RenderPipeline
           "https://#{context[:host_name]}" + element['href']
         else
           element['href']
+        end
+      end
+
+      def prepend_click_service(href)
+        uri = URI.parse(href)
+        if uri.scheme.include?('http')
+          (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + href
+        else
+          href
         end
       end
     end
