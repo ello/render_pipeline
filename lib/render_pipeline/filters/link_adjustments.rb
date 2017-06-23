@@ -22,9 +22,8 @@ module RenderPipeline
           # adjust links that are not relative.
           if element['href'][0] != '/'
             element['rel'] = 'nofollow noopener'
-            element['target'] = '_blank'
             element['href'] = CGI.unescapeHTML(element['href'])
-            element['href'] = (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + element['href']
+            prepend_click_service(element)
           end
         end
         doc
@@ -38,6 +37,22 @@ module RenderPipeline
         else
           element['href']
         end
+      end
+
+      def prepend_click_service(element)
+        begin
+          uri = URI.parse(element['href'])
+          if uri.scheme == 'http' || uri.scheme == 'https'
+            element['href']   = (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + element['href']
+            element['target'] = '_blank'
+          end
+        rescue URI::Error => e
+          logger.error("#{e}")
+        end
+      end
+
+      def logger
+        @logger ||= Logger.new(STDOUT)
       end
     end
   end

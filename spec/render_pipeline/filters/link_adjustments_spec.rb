@@ -26,4 +26,10 @@ describe RenderPipeline::Filter::LinkAdjustments do
     a = Nokogiri::XML(result).at_css('a')
     expect(a['href']).to eq('https://o.ello.co/http://www.example.com/test')
   end
+
+  it 'does not prepend the click service url on external links if protocol is not http/https' do
+    result = subject.to_html('<a href="mailto:asdf@ello.co">email</a>', context)
+    a = Nokogiri::XML(result).at_css('a')
+    expect(a['href']).to eq('mailto:asdf@ello.co')
+  end
 end
