@@ -42,7 +42,7 @@ module RenderPipeline
       def prepend_click_service(element)
         begin
           uri = URI.parse(element['href'])
-          if uri.scheme.include?('http')
+          if uri.scheme == 'http' || uri.scheme == 'https'
             element['href']   = (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + element['href']
             element['target'] = '_blank'
           end
