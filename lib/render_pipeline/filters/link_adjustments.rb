@@ -41,12 +41,21 @@ module RenderPipeline
       end
 
       def prepend_click_service(href)
-        uri = URI.parse(href)
-        if uri.scheme.include?('http')
-          (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + href
-        else
+        begin
+          uri = URI.parse(href)
+          if uri.scheme.include?('http')
+            (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + href
+          else
+            href
+          end
+        rescue URI::Error => e
+          logger.error("URI Parse Error: #{e}")
           href
         end
+      end
+
+      def logger
+        @logger ||= Logger.new(STDOUT)
       end
     end
   end
