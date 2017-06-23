@@ -22,9 +22,8 @@ module RenderPipeline
           # adjust links that are not relative.
           if element['href'][0] != '/'
             element['rel'] = 'nofollow noopener'
-            element['target'] = '_blank'
             element['href'] = CGI.unescapeHTML(element['href'])
-            element['href'] = prepend_click_service(element['href'])
+            prepend_click_service(element)
           end
         end
         doc
@@ -40,17 +39,15 @@ module RenderPipeline
         end
       end
 
-      def prepend_click_service(href)
+      def prepend_click_service(element)
         begin
-          uri = URI.parse(href)
+          uri = URI.parse(element['href'])
           if uri.scheme.include?('http')
-            (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + href
-          else
-            href
+            element['href']   = (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + element['href']
+            element['target'] = '_blank'
           end
         rescue URI::Error => e
-          logger.error("URI Parse Error: #{e}")
-          href
+          logger.error("#{e}")
         end
       end
 
