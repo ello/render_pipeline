@@ -32,4 +32,10 @@ describe RenderPipeline::Filter::LinkAdjustments do
     a = Nokogiri::XML(result).at_css('a')
     expect(a['href']).to eq('mailto:asdf@ello.co')
   end
+
+  it 'does not prepend the click service url if external link is a vimeo link' do
+    result = subject.to_html('<a href="https://vimeo.com/215653382">vimeo</a>', context)
+    a = Nokogiri::XML(result).at_css('a')
+    expect(a['href']).to eq('https://vimeo.com/215653382')
+  end
 end
