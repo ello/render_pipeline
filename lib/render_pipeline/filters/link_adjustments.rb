@@ -43,11 +43,19 @@ module RenderPipeline
         begin
           uri = URI.parse(element['href'])
           if uri.scheme == 'http' || uri.scheme == 'https'
-            element['href']   = (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + element['href']
+            element['href']   = adjust_href(element['href'])
             element['target'] = '_blank'
           end
         rescue URI::Error => e
           logger.error("#{e}")
+        end
+      end
+
+      def adjust_href(href)
+        if /vimeo\.com\/(?<id>[0-9]+)/ =~ href
+          href
+        else
+          (ENV['CLICK_SERVICE_URL'] || 'https://o.ello.co') + '/' + href
         end
       end
 
